@@ -15,6 +15,16 @@
   {% endcol %}
  {% endrow %}
 {% include "blog/post-comments.html" %}
+
+{% if post.author.profile %}
+    {% row %}
+        {% col %}
+            <h4>About the author</h4>
+            <p>{{ post.author.profile.bio }}</p>
+        {% endcol %}
+    {% endrow %}
+{% endif %}
+
   {% row %}
     {% col %}
     {% cache 3600 recent_posts post %}
@@ -22,4 +32,5 @@
     {% endcache %}
     {% endcol %}
   {% endrow %}
+
 {% endblock %}
