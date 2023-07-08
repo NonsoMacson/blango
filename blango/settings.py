@@ -44,6 +44,14 @@ class Dev(Configuration):
   SESSION_COOKIE_SAMESITE = 'None'
 
 
+  EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+  
+  
+  ACCOUNT_ACTIVATION_DAYS = 7
+
+  REGISTRATION_OPEN = True
+
+  
   # Application definition
 
   INSTALLED_APPS = [
