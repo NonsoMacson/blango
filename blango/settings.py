@@ -71,7 +71,8 @@ class Dev(Configuration):
       'allauth.account',
       'allauth.socialaccount',
       'allauth.socialaccount.providers.google',
-      'rest_framework'
+      'rest_framework',
+      'rest_framework.authtoken',
   ]
 
   CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -199,6 +200,13 @@ class Dev(Configuration):
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
   ]
+  REST_FRAMEWORK={
+    "DEFAULT_AUTHENTICATION_CLASSES":[
+      "rest_framework.authentication.BasicAuthentication",
+      "rest_framework.authentication.SessionAuthentication",
+      "rest_framework.authentication.TokenAuthentication",
+    ]
+  }
 #     LOGGING = {
 #     "version": 1,
 #     "disable_existing_loggers": False,
