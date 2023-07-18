@@ -15,7 +15,7 @@ from blog.api.views import  UserDetail, TagViewSet, PostViewSet #PostList, PostD
 urlpatterns = [
     # path("posts/", PostList.as_view(), name="api_post_list"),
     # path("posts/<int:pk>", PostDetail.as_view(), name="api_post_detail"),
-    path("user/<str:email>", UserDetail.as_view(), name="api_user_detail"),
+    path("users/<str:email>", UserDetail.as_view(), name="api_user_detail"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
