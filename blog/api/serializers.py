@@ -43,22 +43,22 @@ class CommentSerializer(serializers.ModelSerializer):
     readonly=['modified_at', 'created_at']
 
 class PostDetailSerializer(PostSerializer):
-  comments=CommentSerializer(many=True)
+  comments=CommentSerializer(many=True, required=False)
 
   def update(self, instance, validated_date):
-    comments=validated_date.pop('comments')
+    comments=validated_date.pop('comments', None)
 
     instance=super(PostDetailSerializer, self).update(instance, validated_date)
 
+    if comments:
+      for comment_data in comments:
+        if comment_data.get("id"):
+          continue
 
-    for comment_data in comments:
-      if comment_data.get("id"):
-        continue
-
-      comment=Comment(**comment_data)
-      comment.creator=self.context['request'].user
-      comment.content_object=instance
-      comment.save()
+        comment=Comment(**comment_data)
+        comment.creator=self.context['request'].user
+        comment.content_object=instance
+        comment.save()
 
     return instance
 
