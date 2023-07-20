@@ -57,4 +57,9 @@ router.register("posts",PostViewSet)
 
 urlpatterns+=[
   path("",include(router.urls)),
+  path(
+    "posts/by-time/<str:period_name>/",
+    PostViewSet.as_view({"get": "list"}),
+    name='post-by-time'
+  ),
 ]
