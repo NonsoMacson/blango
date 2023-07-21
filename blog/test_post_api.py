@@ -51,7 +51,7 @@ class PostApiTestCase(TestCase):
 
   def test_post_list(self):
     resp=self.client.get("/api/v1/posts/")
-    data=resp.json()
+    data=resp.json()["results"]
     self.assertEqual(len(data), 2)
 
     for post_dict in data:
@@ -61,6 +61,7 @@ class PostApiTestCase(TestCase):
       self.assertEqual(post_dict["slug"], post_obj.slug)
       self.assertEqual(post_dict['summary'], post_obj.summary)
       self.assertEqual(post_dict['content'], post_obj.content)
+      
       logger.debug(f"Expected URL: {post_obj.author.email}")
       logger.debug(f"post_dict['author']: {post_dict['author']}")
 
