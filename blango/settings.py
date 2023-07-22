@@ -77,6 +77,7 @@ class Dev(Configuration):
       'rest_framework.authtoken',
       'drf_yasg',
       'django_filters',
+      'versatileimagefield'
   ]
 
   CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -157,6 +158,10 @@ class Dev(Configuration):
   USE_TZ = True
 
   INTERNAL_IPS=['192.168.10.226']
+
+  MEDIA_ROOT = BASE_DIR/ "media"
+
+  MEDIA_URL= "/media/"
 
   #Django Allauth specific settings
   SITE_ID = 1

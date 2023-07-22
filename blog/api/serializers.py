@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from blog.models import Post, Tag, Comment
 from blango_auth.models import User
-
+from versatileimagefield.serializers import VersatileImageFieldSerializer
 
 class TagField(serializers.SlugRelatedField):
   def to_internal_value(self, data):
@@ -21,10 +21,18 @@ class PostSerializer(serializers.ModelSerializer):
   author=serializers.HyperlinkedRelatedField(
     queryset=User.objects.all(), view_name="api_user_detail", lookup_field="email"
   )
+  
+  hero_image=VersatileImageFieldSerializer(
+    sizes=[
+      ("full_size", "url"),
+      ("thumbnail", "thumbnail__100x100")
+    ],
+    read_only=True,
+  )
 
   class Meta:
     model=Post
-    fields="__all__"
+    exclude=["ppoi"]
     readonly=["modified_at", "created_at"]
 
 class Userserializer(serializers.ModelSerializer):
@@ -45,10 +53,19 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostDetailSerializer(PostSerializer):
   comments=CommentSerializer(many=True, required=False)
 
-  def update(self, instance, validated_date):
-    comments=validated_date.pop('comments', None)
+  hero_image=VersatileImageFieldSerializer(
+    sizes=[
+      ("full_size", "url"),
+      ("thumbnail", "thumbnail__100x100"),
+      ("squre_crop", "crop__200x200"),
+    ],
+    read_only=True,
+  )
 
-    instance=super(PostDetailSerializer, self).update(instance, validated_date)
+  def update(self, instance, validated_data):
+    comments=validated_data.pop('comments', None)
+
+    instance=super(PostDetailSerializer, self).update(instance, validated_data)
 
     if comments:
       for comment_data in comments:
