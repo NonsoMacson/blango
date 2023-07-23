@@ -1,25 +1,36 @@
-function resolvedCallback(data){
-  console.log("Resolved with data: "+data)
-}
-
-function rejectedCallback(message){
-  console.log('Rejected with message: '+message)
-}
-
-const lazyAdd = function(a, b){
-  const doAdd = (resolve, reject)=>{
-    if (typeof a !== 'number' || typeof b !== 'number'){
-      reject(`${a} and ${b} must be numbers`)
-    }else{
-      sum=a+b
-      resolve(sum)
-    }
+class ClickButton extends React.Component{
+  state={
+    wasClicked: false
   }
-  return new Promise(doAdd)
+
+  handleClicked(){
+    this.setState(
+      {wasClicked: true}
+    )
+  }
+
+  render(){
+    let buttonText
+
+    if(this.state.wasClicked){
+      buttonText="Clicked!"
+    }else{
+      buttonText= "Click me"
+    }
+
+    return React.createElement(
+      'button',
+      {
+        className: 'btn btn-primary mt-2',
+        onClick: ()=>{
+          this.handleClicked()
+        }
+      }, buttonText
+    )
+  }
 }
 
 
+const domContainer=document.getElementById('react_root')
 
-lazyAdd(4, 6).then(resolvedCallback, rejectedCallback)
-
-lazyAdd("mac", 'nonso').then(resolvedCallback, rejectedCallback)
+ReactDOM.render(React.createElement(ClickButton), domContainer)
