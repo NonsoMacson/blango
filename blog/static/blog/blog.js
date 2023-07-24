@@ -27,25 +27,36 @@ class PostRow extends React.Component{
 
 class PostTable extends React.Component{
   state = {
-    dataLoaded: true,
-    data: {
-      results: [
-        {
-          id: 15,
-          tags: [
-            'django', 'react'
-          ],
-          'hero_image': {
-            'thumbnail': "http://wonderdenver-signalbook-8000.codio.io/media/__sized__/hero_images/IMG_20191107_190016_001-thumbnail-100x100-70.JPG",
-            'full_size': '/media/hero_images/snake-419043_1920.jpg'
-          },
-          title: 'Test Post',
-          slug: 'test-post',
-          summary: 'A test post, created for Django/React.'
-        }
-      ]
-    }
+    dataLoaded: false,
+    data: null
   }
+
+
+  componentDidMount (){
+    fetch(this.props.url).then(response => {
+      if (response.status !==200){
+        throw new Error('Invalid status from server: ' + response.stausText)
+      }
+      return response.json()
+    }).then(data => {
+      this.setState({
+        dataLoaded: true,
+        data: data
+      })
+    }).catch(e => {
+      console.error(e)
+      this.setState({
+        dataLoaded: true, 
+        data:{
+          results:[]
+        }
+      })
+    })
+  }
+
+
+
+
   render(){
     let rows
 
@@ -82,4 +93,4 @@ class PostTable extends React.Component{
 
 const domContainer=document.getElementById('react_root')
 
-ReactDOM.render(React.createElement(PostTable), domContainer)
+ReactDOM.render(React.createElement(PostTable, {url: postListUrl}), domContainer)
